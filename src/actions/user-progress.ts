@@ -107,6 +107,7 @@ export const reduceHearts = async (challengeId: number) => {
   revalidatePath("/learn");
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
+  revalidatePath("/onboarding");
   revalidatePath(`/lesson/${lessonId}`);
 };
 
@@ -134,4 +135,5 @@ export const refillHearts = async () => {
   revalidatePath("/learn");
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
+  revalidatePath("/onboarding");
 };
