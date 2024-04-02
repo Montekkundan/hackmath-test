@@ -4,7 +4,7 @@ import { IconAI, IconUser } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage } from '../ui/avatar';
-import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 
 export function UserMessage({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
@@ -35,7 +35,7 @@ export function BotMessage({
   children,
   className,
 }: {
-  children: React.ReactNode;
+  children: string;
   className?: string;
 }) {
   return (
@@ -55,7 +55,7 @@ export function BotMessage({
         <div className='font-bold'>
           Dr. Ham
         </div>
-        {children}
+        <ReactMarkdown>{children}</ReactMarkdown>
       </div>
     </div>
   );
