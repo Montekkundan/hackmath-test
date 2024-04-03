@@ -37,9 +37,6 @@ const ShopPage = async () => {
           points={userData.points}
           hasActiveSubscription={isPro}
         />
-        {!isPro && (
-          <Promo />
-        )}
         <Quests points={userData.points} />
       </StickyWrapper>
       <FeedWrapper>
