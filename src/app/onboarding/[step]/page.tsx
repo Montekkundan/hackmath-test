@@ -23,7 +23,7 @@ export default function Page({ params }: { params: { step: string } }) {
       case 'topics':
         return 'Which topics are you interested in?';
       case 'reason':
-        return 'What is your reason for studying?';
+        return 'What did you choose HackMath?';
       case 'success':
         return 'Great Onboarding Complete!';
       default:

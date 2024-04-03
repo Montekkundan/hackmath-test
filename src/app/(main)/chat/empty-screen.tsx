@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { IconArrowRight } from '@/components/ui/icons';
+import { Fragment } from 'react';
 
 const exampleMessages = [
     {
-        heading: 'What is the area of a circle with radius 5?',
+        heading: 'What is the area of a circle with \nradius 5?',
         message: 'What is the area of a circle with radius 5?',
     },
     {
-        heading: 'How do you solve the quadratic equation x^2 - 4x + 4 = 0?',
+        heading: 'How do you solve the quadratic  \nequation x^2 - 4x + 4 = 0?',
         message: 'How do you solve the quadratic equation x^2 - 4x + 4 = 0?',
     },
     {
@@ -21,8 +22,16 @@ export function EmptyScreen({
 }: {
     submitMessage: (message: string) => void;
 }) {
+    const renderMessageWithBreaks = (message: string, index: any) => (
+        message.split('\n').map((line, idx) => (
+            <Fragment key={`${index}-${idx}`}>
+                {idx > 0 && <br />}
+                {line}
+            </Fragment>
+        ))
+    );
     return (
-        <div className="mx-auto max-w-2xl px-4">
+        <div className="sm:mx-auto md:ml-16 max-w-2xl px-4">
             <div className="rounded-lg border bg-background p-8 mb-4">
                 <h1 className="mb-2 text-lg font-semibold">
                     Dr Ham
@@ -40,14 +49,14 @@ export function EmptyScreen({
                         <Button
                             key={index}
                             variant="ghost"
-                            className="h-auto text-base"
+                            className="h-auto text-base "
                             type='submit'
                             onClick={async () => {
                                 submitMessage(message.message);
                             }}
                         >
                             <IconArrowRight className="mr-2 text-muted-foreground" />
-                            {message.heading}
+                            <span className='inline-flex items-center text-left break-words'> {renderMessageWithBreaks(message.heading, index)}</span>
                         </Button>
                     ))}
                 </div>

@@ -116,7 +116,7 @@ function Completion() {
         }
     }, [completion]);
     return (
-        <div className="mx-auto  w-full sm:max-w-xl md:max-w-xl lg:max-w-3xl sm:px-4 py-24 flex flex-col stretch">
+        <div className="ml-12  w-full sm:max-w-xl md:max-w-xl lg:max-w-3xl sm:px-4 py-24 flex flex-col stretch">
 
             {conversation.length === 0 && (
                 <EmptyScreen submitMessage={submitFromEmptyScreen} />
