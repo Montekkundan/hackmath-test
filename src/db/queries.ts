@@ -8,19 +8,33 @@ import {
   courses, 
   lessons, 
   units, 
-  userProgress,
-  userSubscription
+  userData,
+  userSubscription,
 } from "@/db/schema";
 
-export const getUserProgress = cache(async () => {
+export const getUserOnboardingProgress = cache(async () => {
   const { userId } = await auth();
 
   if (!userId) {
     return null;
   }
 
-  const data = await db.query.userProgress.findFirst({
-    where: eq(userProgress.userId, userId),
+  const data = await db.query.userData.findFirst({
+    where: eq(userData.userId, userId),
+  });
+
+  return data || null;
+});
+
+export const getUserData = cache(async () => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const data = await db.query.userData.findFirst({
+    where: eq(userData.userId, userId),
     with: {
       activeCourse: true,
     },
@@ -31,15 +45,15 @@ export const getUserProgress = cache(async () => {
 
 export const getUnits = cache(async () => {
   const { userId } = await auth();
-  const userProgress = await getUserProgress();
+  const userData = await getUserData();
 
-  if (!userId || !userProgress?.activeCourseId) {
+  if (!userId || !userData?.activeCourseId) {
     return [];
   }
 
   const data = await db.query.units.findMany({
     orderBy: (units, { asc }) => [asc(units.order)],
-    where: eq(units.courseId, userProgress.activeCourseId),
+    where: eq(units.courseId, userData.activeCourseId),
     with: {
       lessons: {
         orderBy: (lessons, { asc }) => [asc(lessons.order)],
@@ -109,15 +123,15 @@ export const getCourseById = cache(async (courseId: number) => {
 
 export const getCourseProgress = cache(async () => {
   const { userId } = await auth();
-  const userProgress = await getUserProgress();
+  const userData = await getUserData();
 
-  if (!userId || !userProgress?.activeCourseId) {
+  if (!userId || !userData?.activeCourseId) {
     return null;
   }
 
   const unitsInActiveCourse = await db.query.units.findMany({
     orderBy: (units, { asc }) => [asc(units.order)],
-    where: eq(units.courseId, userProgress.activeCourseId),
+    where: eq(units.courseId, userData.activeCourseId),
     with: {
       lessons: {
         orderBy: (lessons, { asc }) => [asc(lessons.order)],
@@ -247,8 +261,8 @@ export const getTopTenUsers = cache(async () => {
     return [];
   }
 
-  const data = await db.query.userProgress.findMany({
-    orderBy: (userProgress, { desc }) => [desc(userProgress.points)],
+  const data = await db.query.userData.findMany({
+    orderBy: (userData, { desc }) => [desc(userData.points)],
     limit: 10,
     columns: {
       userId: true,

@@ -6,7 +6,7 @@ import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { POINTS_TO_REFILL } from "@/constants";
-import { refillHearts } from "@/actions/user-progress";
+import { refillHearts } from "@/actions/user-data";
 import { createStripeUrl } from "@/actions/user-subscription";
 
 type Props = {
@@ -72,7 +72,7 @@ export const Items = ({
             : (
               <div className="flex items-center">
                 <Image
-                  src="/points.svg"
+                  src="/images/points.svg"
                   alt="Points"
                   height={20}
                   width={20}
@@ -87,7 +87,7 @@ export const Items = ({
       </div>
       <div className="flex items-center w-full p-4 pt-8 gap-x-4 border-t-2">
         <Image
-          src="/unlimited.svg"
+          src="/images/unlimited.svg"
           alt="Unlimited"
           height={60}
           width={60}

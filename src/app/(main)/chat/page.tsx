@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { IconArrowElbow, IconPlus } from '@/components/ui/icons';
 import { ChatList } from '@/components/chat-list';
 import { Footer } from './footer';
+import { EmptyScreen } from './empty-screen';
 
 interface Message {
     type: 'user' | 'bot';
@@ -76,6 +77,19 @@ function Completion() {
         }
     };
 
+    const submitFromEmptyScreen = (message: string) => {
+        // Update the input
+        handleInputChange({ target: { value: message } } as React.ChangeEvent<HTMLTextAreaElement>);
+        
+        // Ensure the state update is processed before submitting the form
+        setTimeout(() => {
+            if (formRef.current) {
+                const formSubmitEvent = new Event('submit', { cancelable: true, bubbles: true });
+                formRef.current.dispatchEvent(formSubmitEvent);
+            }
+        }, 0);
+    };
+
     useEffect(() => {
         if (completion) {
             setConversation((prevConversation) => {
@@ -103,6 +117,10 @@ function Completion() {
     }, [completion]);
     return (
         <div className="mx-auto  w-full sm:max-w-xl md:max-w-xl lg:max-w-3xl sm:px-4 py-24 flex flex-col stretch">
+
+            {conversation.length === 0 && (
+                <EmptyScreen submitMessage={submitFromEmptyScreen} />
+            )}
             <ChatList messages={conversation} />
 
             <ChatScrollAnchor trackVisibility={true} />

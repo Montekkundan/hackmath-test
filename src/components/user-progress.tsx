@@ -12,7 +12,7 @@ type Props = {
   hasActiveSubscription: boolean;
 };
 
-export const UserProgress = ({ 
+export const UserData = ({ 
   activeCourse, 
   points, 
   hearts, 
@@ -33,7 +33,7 @@ export const UserProgress = ({
       </Link>
       <Link href="/shop">
         <Button variant="ghost" className="text-orange-500">
-          <Image src="/points.svg" height={28} width={28} alt="Points" className="mr-2" />
+          <Image src="/images/points.svg" height={28} width={28} alt="Points" className="mr-2" />
           {points}
         </Button>
       </Link>

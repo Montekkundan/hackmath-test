@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getLesson, getUserProgress, getUserSubscription } from "@/db/queries";
+import { getLesson, getUserData, getUserSubscription } from "@/db/queries";
 
 import { Quiz } from "../quiz";
 
@@ -14,12 +14,12 @@ const LessonIdPage = async ({
   params,
 }: Props) => {
   const lessonData = getLesson(params.lessonId);
-  const userProgressData = getUserProgress();
+  const userProgressData = getUserData();
   const userSubscriptionData = getUserSubscription();
 
   const [
     lesson,
-    userProgress,
+    userData,
     userSubscription,
   ] = await Promise.all([
     lessonData,
@@ -27,7 +27,7 @@ const LessonIdPage = async ({
     userSubscriptionData,
   ]);
 
-  if (!lesson || !userProgress) {
+  if (!lesson || !userData) {
     redirect("/learn");
   }
 
@@ -39,7 +39,7 @@ const LessonIdPage = async ({
     <Quiz
       initialLessonId={lesson.id}
       initialLessonChallenges={lesson.challenges}
-      initialHearts={userProgress.hearts}
+      initialHearts={userData.hearts}
       initialPercentage={initialPercentage}
       userSubscription={userSubscription}
     />

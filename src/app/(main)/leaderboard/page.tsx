@@ -2,21 +2,21 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { FeedWrapper } from "@/components/feed-wrapper";
-import { UserProgress } from "@/components/user-progress";
+import { UserData } from "@/components/user-progress";
 import { StickyWrapper } from "@/components/sticky-wrapper";
-import { getTopTenUsers, getUserProgress, getUserSubscription } from "@/db/queries";
+import { getTopTenUsers, getUserData, getUserSubscription } from "@/db/queries";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Promo } from "@/components/promo";
 import { Quests } from "@/components/quests";
 
 const LearderboardPage = async () => {
-  const userProgressData = getUserProgress();
+  const userProgressData = getUserData();
   const userSubscriptionData = getUserSubscription();
   const leaderboardData = getTopTenUsers();
 
   const [
-    userProgress,
+    userData,
     userSubscription,
     leaderboard,
   ] = await Promise.all([
@@ -25,7 +25,7 @@ const LearderboardPage = async () => {
     leaderboardData,
   ]);
 
-  if (!userProgress || !userProgress.activeCourse) {
+  if (!userData || !userData.activeCourse) {
     redirect("/courses");
   }
 
@@ -34,21 +34,21 @@ const LearderboardPage = async () => {
   return ( 
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
-        <UserProgress
-          activeCourse={userProgress.activeCourse}
-          hearts={userProgress.hearts}
-          points={userProgress.points}
+        <UserData
+          activeCourse={userData.activeCourse}
+          hearts={userData.hearts}
+          points={userData.points}
           hasActiveSubscription={isPro}
         />
         {!isPro && (
           <Promo />
         )}
-        <Quests points={userProgress.points} />
+        <Quests points={userData.points} />
       </StickyWrapper>
       <FeedWrapper>
         <div className="w-full flex flex-col items-center">
           <Image
-            src="/leaderboard.svg"
+            src="/images/leaderboard.svg"
             alt="Leaderboard"
             height={90}
             width={90}
@@ -60,9 +60,9 @@ const LearderboardPage = async () => {
             See where you stand among other learners in the community.
           </p>
           <Separator className="mb-4 h-0.5 rounded-full" />
-          {leaderboard.map((userProgress, index) => (
+          {leaderboard.map((userData, index) => (
             <div 
-              key={userProgress.userId}
+              key={userData.userId}
               className="flex items-center w-full p-2 px-4 rounded-xl hover:bg-gray-200/50"
             >
               <p className="font-bold text-red-700 mr-4">{index + 1}</p>
@@ -71,14 +71,14 @@ const LearderboardPage = async () => {
               >
                 <AvatarImage
                   className="object-cover"
-                  src={userProgress.userImageSrc}
+                  src={userData.userImageSrc}
                 />
               </Avatar>
               <p className="font-bold text-neutral-800 flex-1">
-                {userProgress.userName}
+                {userData.userName}
               </p>
               <p className="text-muted-foreground">
-                {userProgress.points} XP
+                {userData.points} XP
               </p>
             </div>
           ))}

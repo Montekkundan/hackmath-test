@@ -4,14 +4,14 @@ import { toast } from "sonner";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-import { courses, userProgress } from "@/db/schema";
-import { upsertUserProgress } from "@/actions/user-progress";
+import { courses, userData } from "@/db/schema";
+import { upsertUserData } from "@/actions/user-data";
 
 import { Card } from "./card";
 
 type Props = {
   courses: typeof courses.$inferSelect[];
-  activeCourseId?: typeof userProgress.$inferSelect.activeCourseId;
+  activeCourseId?: typeof userData.$inferSelect.activeCourseId;
 };
 
 export const List = ({ courses, activeCourseId }: Props) => {
@@ -26,7 +26,7 @@ export const List = ({ courses, activeCourseId }: Props) => {
     }
 
     startTransition(() => {
-      upsertUserProgress(id)  
+      upsertUserData(id)  
         .catch(() => toast.error("Something went wrong."));
     });
   };

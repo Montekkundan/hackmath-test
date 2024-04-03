@@ -5,8 +5,8 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import db from "@/db/drizzle";
-import { getUserProgress, getUserSubscription } from "@/db/queries";
-import { challengeProgress, challenges, userProgress } from "@/db/schema";
+import { getUserData, getUserSubscription } from "@/db/queries";
+import { challengeProgress, challenges, userData } from "@/db/schema";
 
 export const upsertChallengeProgress = async (challengeId: number) => {
   const { userId } = await auth();
@@ -15,7 +15,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     throw new Error("Unauthorized"); 
   }
 
-  const currentUserProgress = await getUserProgress();
+  const currentUserProgress = await getUserData();
   const userSubscription = await getUserSubscription();
 
   if (!currentUserProgress) {
@@ -57,16 +57,15 @@ export const upsertChallengeProgress = async (challengeId: number) => {
       eq(challengeProgress.id, existingChallengeProgress.id)
     );
 
-    await db.update(userProgress).set({
+    await db.update(userData).set({
       hearts: Math.min(currentUserProgress.hearts + 1, 5),
       points: currentUserProgress.points + 10,
-    }).where(eq(userProgress.userId, userId));
+    }).where(eq(userData.userId, userId));
 
     revalidatePath("/learn");
     revalidatePath("/lesson");
     revalidatePath("/quests");
     revalidatePath("/leaderboard");
-    revalidatePath("/onboarding");
     revalidatePath(`/lesson/${lessonId}`);
     return;
   }
@@ -77,14 +76,13 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     completed: true,
   });
 
-  await db.update(userProgress).set({
+  await db.update(userData).set({
     points: currentUserProgress.points + 10,
-  }).where(eq(userProgress.userId, userId));
+  }).where(eq(userData.userId, userId));
 
   revalidatePath("/learn");
   revalidatePath("/lesson");
   revalidatePath("/quests");
   revalidatePath("/leaderboard");
-  revalidatePath("/onboarding");
   revalidatePath(`/lesson/${lessonId}`);
 };

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useAudio, useWindowSize, useMount } from "react-use";
 
-import { reduceHearts } from "@/actions/user-progress";
+import { reduceHearts } from "@/actions/user-data";
 import { useHeartsModal } from "@/store/use-hearts-modal";
 import { challengeOptions, challenges, userSubscription } from "@/db/schema";
 import { usePracticeModal } from "@/store/use-practice-modal";

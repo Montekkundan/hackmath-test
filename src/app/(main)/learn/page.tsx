@@ -3,14 +3,14 @@ import { redirect } from "next/navigation";
 import { Promo } from "@/components/promo";
 import { Quests } from "@/components/quests";
 import { FeedWrapper } from "@/components/feed-wrapper";
-import { UserProgress } from "@/components/user-progress";
+import { UserData } from "@/components/user-progress";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { lessons, units as unitsSchema } from "@/db/schema";
 import { 
   getCourseProgress, 
   getLessonPercentage, 
   getUnits, 
-  getUserProgress,
+  getUserData,
   getUserSubscription
 } from "@/db/queries";
 
@@ -18,14 +18,14 @@ import { Unit } from "./unit";
 import { Header } from "./header";
 
 const LearnPage = async () => {
-  const userProgressData = getUserProgress();
+  const userProgressData = getUserData();
   const courseProgressData = getCourseProgress();
   const lessonPercentageData = getLessonPercentage();
   const unitsData = getUnits();
   const userSubscriptionData = getUserSubscription();
 
   const [
-    userProgress,
+    userData,
     units,
     courseProgress,
     lessonPercentage,
@@ -38,7 +38,11 @@ const LearnPage = async () => {
     userSubscriptionData,
   ]);
 
-  if (!userProgress || !userProgress.activeCourse) {
+  if (!userData || !userData.grade || !userData.study || !userData.topics || !userData.reason) {
+    redirect("/onboarding");
+  }
+
+  if (!userData || !userData.activeCourse) {
     redirect("/courses");
   }
 
@@ -51,19 +55,19 @@ const LearnPage = async () => {
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
-        <UserProgress
-          activeCourse={userProgress.activeCourse}
-          hearts={userProgress.hearts}
-          points={userProgress.points}
+        <UserData
+          activeCourse={userData.activeCourse}
+          hearts={userData.hearts}
+          points={userData.points}
           hasActiveSubscription={isPro}
         />
         {!isPro && (
           <Promo />
         )}
-        <Quests points={userProgress.points} />
+        <Quests points={userData.points} />
       </StickyWrapper>
       <FeedWrapper>
-        <Header title={userProgress.activeCourse.title} />
+        <Header title={userData.activeCourse.title} />
         {units.map((unit) => (
           <div key={unit.id} className="mb-10">
             <Unit
