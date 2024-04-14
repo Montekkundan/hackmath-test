@@ -35,7 +35,7 @@ export const upsertUserData = async (courseId: number) => {
       activeCourseId: courseId,
       userName: user.firstName || "User",
       userImageSrc: user.imageUrl || "/mascot.png",
-    });
+    }).where(eq(userData.userId, userId));
 
     revalidatePath("/courses");
     revalidatePath("/learn");
@@ -69,7 +69,7 @@ export const upsertUserGrade = async (grade: string) => {
       grade: grade,
       userName: user.firstName || "User",
       userImageSrc: user.imageUrl || "/mascot.png",
-    });
+    }).where(eq(userData.userId, userId));
 
     revalidatePath("/learn");
     revalidatePath("/onboarding");
@@ -102,7 +102,7 @@ export const upsertUserStudy = async (study: string) => {
       study: study,
       userName: user.firstName || "User",
       userImageSrc: user.imageUrl || "/mascot.png",
-    });
+    }).where(eq(userData.userId, userId));
 
     revalidatePath("/learn");
     revalidatePath("/onboarding");
@@ -135,7 +135,7 @@ export const upsertUserTopics = async (topics: string) => {
       topics: topics,
       userName: user.firstName || "User",
       userImageSrc: user.imageUrl || "/mascot.png",
-    });
+    }).where(eq(userData.userId, userId));
 
     revalidatePath("/learn");
     revalidatePath("/onboarding");
@@ -168,7 +168,7 @@ export const upsertUserReason = async (reason: string) => {
       reason: reason,
       userName: user.firstName || "User",
       userImageSrc: user.imageUrl || "/mascot.png",
-    });
+    }).where(eq(userData.userId, userId));
 
     revalidatePath("/learn");
     revalidatePath("/onboarding");
