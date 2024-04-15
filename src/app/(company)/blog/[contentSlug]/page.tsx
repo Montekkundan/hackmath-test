@@ -142,7 +142,7 @@ export default function Post({ params }: { params: { contentSlug: string } }) {
             // img: MarkdownImage,
           }}
         >
-          {markdown.parent}
+          {markdown}
         </ReactMarkdown>
         </div>
      

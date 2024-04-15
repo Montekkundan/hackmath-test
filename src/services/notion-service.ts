@@ -46,7 +46,7 @@ export default class NotionService {
   }
 
   async getSingleBlogPost(contentSlug: string, locale: string): Promise<PostPage> {
-    let post, markdown;
+    let post;
 
     const databaseId  = process.env.NOTION_BLOG_DATABASE_ID!;
     const response = await this.client.databases.query({
@@ -78,9 +78,9 @@ export default class NotionService {
     const page = response.results[0];
 
     const mdBlocks = await this.n2m.pageToMarkdown(page.id);
-    markdown = this.n2m.toMarkdownString(mdBlocks);
+    const markdownObject = this.n2m.toMarkdownString(mdBlocks);
+    const markdown = markdownObject.parent;
     post = NotionService.pageToPostTransformer(page);
-    console.log('markdown', markdown);
     return {
         post,
         markdown,
