@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['aceternity.com', 'images6.alphacoders.com', 'th.bing.com'],
+    domains: ['aceternity.com', 'images6.alphacoders.com',
+      'prod-files-secure.s3.us-west-2.amazonaws.com',
+      'images.unsplash.com',
+    ],
     },
     async headers() {
       return [
