@@ -6,6 +6,7 @@ import { ExitModal } from "@/components/modals/exit-modal";
 import { HeartsModal } from "@/components/modals/hearts-modal";
 import { PracticeModal } from "@/components/modals/practice-modal";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/react';
 import { dark } from "@clerk/themes";
 
 const font = Nunito({ subsets: ["latin"] });
@@ -32,6 +33,7 @@ export default function RootLayout({
           <ExitModal />
           <HeartsModal />
           <PracticeModal />
+          <Analytics />
           {children}
         </body>
       </html>
